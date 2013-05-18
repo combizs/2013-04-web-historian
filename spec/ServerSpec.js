@@ -1,5 +1,6 @@
 var handler = require("../web/request-handler");
-handler.datadir = __dirname + "testdata/sites.txt";
+// need to add slash to use actual directory/filename
+handler.datadir = __dirname + "/testdata/sites.txt";
 var stubs = require("./helpers/stubs");
 var res;
 
@@ -33,7 +34,7 @@ describe("Node Server Request Listener Function", function() {
       expect(res._responseCode).toEqual(200);
       expect(res._data).toMatch(/google/); // the resulting html should have the text "google"
       expect(res._ended).toEqual(true);
-    })
+    });
   });
 
   it("Should accept posts to /", function() {
@@ -43,8 +44,8 @@ describe("Node Server Request Listener Function", function() {
     var req = new stubs.Request("http://127.0.0.1:8080/", "POST", {url: url});
 
     handler.handleRequest(req, res);
-
-    var fileContents = fs.readFileSync(handler.datadir);
+    // add additional option: utf8 to return as string rather than buffer
+    var fileContents = fs.readFileSync(handler.datadir, 'utf8');
     expect(res._responseCode).toEqual(302);
     expect(fileContents).toEqual(url + "\n");
     expect(res._ended).toEqual(true);
