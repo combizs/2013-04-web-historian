@@ -6,11 +6,12 @@ describe("html fetcher helpers", function(){
 
   it("should have a 'readUrls' function", function(){
     var urlArray = ["example1.com", "example2.com"];
+    var siteListFileName = __dirname + "/testdata/sites.txt";
 
-    fs.writeFileSync(__dirname + "/testdata/sites.txt", urlArray.join("\n"));
+    fs.writeFileSync(siteListFileName, urlArray.join("\n"));
 
     var resultArray = [];
-    var result = htmlFetcherHelpers.readUrls(urlArray, function(urls){
+    var result = htmlFetcherHelpers.readUrls(siteListFileName, function(urls){
       resultArray.push(urls);
     });
 
@@ -19,9 +20,10 @@ describe("html fetcher helpers", function(){
       expect(resultArray).toEqual(urlArray);
     });
   });
-  
-  xit("should have a 'downloadUrls' function", function(){
-    var result = htmlFetcherHelpers.downloadUrls();
+
+  it("should have a 'downloadUrl' function", function(){
+    var result = htmlFetcherHelpers.downloadUrl;
     expect(result).toBeTruthy();
   });
+
 });
