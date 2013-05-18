@@ -1,7 +1,8 @@
 var handler = require("../web/request-handler");
-// need to add slash to use actual directory/filename
 handler.datadir = __dirname + "/testdata/sites.txt";
+
 var stubs = require("./helpers/stubs");
+var fs = require("fs");
 var res;
 
 // allows us to run tests async
