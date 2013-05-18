@@ -1,8 +1,6 @@
 exports.datadir = __dirname + "/../data/sites.txt"; // tests will need to override this.
-var url = require("url");
-
-
 fs = require("fs");
+var url = require("url");
 
 var headers = {
   "access-control-allow-origin": "*",
@@ -44,11 +42,10 @@ exports.handleRequest = function (req, res) {
 
     req.on('end', function() {
       messageData = JSON.parse('{"' + decodeURI(messageData).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
-      fs.appendFile(exports.datadir, messageData.url + '\n', 'utf8', function (err) {
+      fs.appendFileSync(exports.datadir, messageData.url + '\n', 'utf8', function (err) {
         console.log('Failed to write to file:', exports.datadir);
         if (err) throw err;
       });
-      console.log('Try this:', messageData.url);
     });
   }
 
