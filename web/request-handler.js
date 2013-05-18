@@ -1,4 +1,8 @@
 exports.datadir = __dirname + "data/sites.txt"; // tests will need to override this.
+var url = require("url");
+
+
+fs = require("fs");
 
 var headers = {
   "access-control-allow-origin": "*",
@@ -11,6 +15,15 @@ var headers = {
 exports.handleRequest = function (req, res) {
   console.log('-----------------------------------------');
 
+  // remove leading '/' character from url
+  var parsedUrl = url.parse(req.url);
+  var urlString = parsedUrl.pathname;
+  if(urlString[0] === "/") {
+    urlString = urlString.substr(1);
+  }
+
+  console.log('urlString', urlString);
+
   var statusCode = 200;
   var body;
 
@@ -20,7 +33,7 @@ exports.handleRequest = function (req, res) {
   }
 
   if(req.method === "POST") {
-
+    // statusCode
   }
 
   res.writeHead(statusCode, headers);
