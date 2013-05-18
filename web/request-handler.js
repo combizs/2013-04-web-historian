@@ -1,4 +1,4 @@
-exports.datadir = __dirname + "data/sites.txt"; // tests will need to override this.
+exports.datadir = __dirname + "/../data/sites.txt"; // tests will need to override this.
 var url = require("url");
 
 
@@ -25,11 +25,10 @@ exports.handleRequest = function (req, res) {
   console.log('urlString', urlString);
 
   var statusCode = 200;
-  var body;
+  var body = "<html><form method='POST'><input name='url' id='url'><input type='submit'></form></html>";
+
 
   if(req.method === "GET") {
-    body = '<html><input></html>';
-
   }
 
   if(req.method === "POST") {
@@ -44,13 +43,13 @@ exports.handleRequest = function (req, res) {
     });
 
     req.on('end', function() {
-    messageData = JSON.parse('{"' + decodeURI(messageData).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
-    fs.writeFileSync(exports.datadir, messageData.url + '\n');
-    console.log(messageData.url);
-
+      messageData = JSON.parse('{"' + decodeURI(messageData).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+      fs.appendFile(exports.datadir, messageData.url + '\n', 'utf8', function (err) {
+        console.log('Failed to write to file:', exports.datadir);
+        if (err) throw err;
+      });
+      console.log('Try this:', messageData.url);
     });
-
-    console.log('post request url header', req.header);
   }
 
   res.writeHead(statusCode, headers);
