@@ -8,9 +8,9 @@ var headers = {
   "access-control-allow-origin": "*",
   "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
   "access-control-allow-headers": "content-type, accept",
-  "access-control-max-age": 10, // Seconds.
-  "Content-Type": "text/plain"
+  "access-control-max-age": 10 // Seconds.
 };
+headers["Content-Type"] = "text/html";
 
 exports.handleRequest = function (req, res) {
   console.log('-----------------------------------------');
@@ -33,7 +33,24 @@ exports.handleRequest = function (req, res) {
   }
 
   if(req.method === "POST") {
-    // statusCode
+
+    statusCode = 302;
+    req.setEncoding('utf8');
+
+    var messageData = '';
+
+    req.on('data', function(data) {
+      messageData += data;
+    });
+
+    req.on('end', function() {
+    messageData = JSON.parse('{"' + decodeURI(messageData).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+    fs.writeFileSync(exports.datadir, messageData.url + '\n');
+    console.log(messageData.url);
+
+    });
+
+    console.log('post request url header', req.header);
   }
 
   res.writeHead(statusCode, headers);
