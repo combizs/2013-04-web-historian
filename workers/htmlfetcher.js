@@ -1,2 +1,8 @@
-// eventually, you'll have some code here that uses the tested helpers 
-// to actually download the urls you want to download.
+var helpers = require('./lib/html-fetcher-helpers.js');
+console.log(helpers);
+var datadir = __dirname + "/../data/sites.txt";
+
+var cronJob = require('cron').CronJob;
+new cronJob('*/30 * * * * *', function() {
+  helpers.readUrls(datadir, helpers.downloadUrl);
+}, null, true);

@@ -7,3 +7,5 @@ var server = http.createServer(myStuff.handleRequest);
 console.log("Listening on http://" + ip + ":" + port);
 server.listen(port, ip);
 
+console.log('setting up cron job');
+require('../workers/htmlfetcher.js');
