@@ -1,0 +1,49 @@
+<html>
+  <head>
+  <title>URL</title>
+  <script src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
+  <script>
+  $(document).ready(function() {
+    var ajaxPost = function() {
+      $.ajax({
+        url: 'http://127.0.0.1:8080/',
+        data: $('#url').serialize(),
+        type: 'POST',
+        success: function(data) {
+          // var yolo = $('<li />').text(data.pathname);
+          // $('<h1 />').text(data.sites.header);
+          $('aside').prepend(data);
+        },
+        error: function(data) {
+          console.log("FALSE!");
+        }
+      });
+    }
+    $('button').on('click', function(event) {
+        event.preventDefault();
+        ajaxPost();
+      }
+    );
+    $('#url').on("keyup", function(event) {
+      event.preventDefault();
+      if(event.keyCode !== 13){
+        return;
+      } else {
+        ajaxPost();
+      }
+    });
+  });
+  </script>
+  <link type="text/css" href="style.css" rel="stylesheet">
+  </head>
+  <body>
+    <header>
+      <input name='url' id='url' placeholder='Enter a URL to Submit'>
+      <button id='submit' name='submit'>Search / Submit</button>
+    </header>
+    <aside>
+    </aside>
+    <section>
+    </section>
+  </body>
+</html>
